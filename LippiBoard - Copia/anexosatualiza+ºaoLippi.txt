@@ -1,0 +1,73 @@
+-- -----------------------------------------------------
+-- Table `mydb2`.`projetos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb2`.`projetos` (
+  `projeto_id` INT NOT NULL AUTO_INCREMENT,
+  `projeto_nome` VARCHAR(200) NOT NULL,
+  `projeto_data_de_entrega` DATE NOT NULL,
+  `projeto_descricao` LONGTEXT NOT NULL,
+  `projeto_semestre` INT NOT NULL,
+  `projeto_ano` INT NOT NULL,
+  `projeto_nome_file` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`projeto_id`);
+
+-- -----------------------------------------------------
+-- Table `mydb2`.`anexos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb2`.`anexos` (
+  `anexo_id` INT NOT NULL AUTO_INCREMENT,
+  `anexo_nome` VARCHAR(200) NOT NULL,
+  `anexos_projeto_id` INT NOT NULL,
+  PRIMARY KEY (`anexo_id`),
+  INDEX `fk_anexos_projetos1_idx` (`anexos_projeto_id` ASC) ,
+  CONSTRAINT `fk_anexos_projetos1`
+    FOREIGN KEY (`anexos_projeto_id`)
+    REFERENCES `mydb2`.`projetos` (`projeto_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb2`.`integrantes_dos_projetos` 
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb2`.`integrantes_dos_projetos` (
+  `idpIntegrantes_id` INT NOT NULL AUTO_INCREMENT,
+  `idp_projeto_id` INT NOT NULL,
+  `idp_aluno_id` INT NOT NULL,
+  PRIMARY KEY (`idpIntegrantes_id`),
+  INDEX `fk_integrantes_dos_projetos_projetos1_idx` (`idp_projeto_id` ASC) ,
+  INDEX `fk_integrantes_dos_projetos_alunos1_idx` (`idp_aluno_id` ASC) ,
+  CONSTRAINT `fk_integrantes_dos_projetos_projetos1`
+    FOREIGN KEY (`idp_projeto_id`)
+    REFERENCES `mydb2`.`projetos` (`projeto_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_integrantes_dos_projetos_alunos1`
+    FOREIGN KEY (`idp_aluno_id`)
+    REFERENCES `mydb2`.`alunos` (`aluno_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `mydb2`.`disciplinas_dos_projetos` 
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb2`.`disciplinas_dos_projetos` (
+  `idpDisciplinas_id` INT NOT NULL AUTO_INCREMENT,
+  `idp_projeto_id` INT NOT NULL,
+  `idp_disciplina_id` INT NOT NULL,
+  PRIMARY KEY (`idpDisciplinas_id`),
+  INDEX `fk_disciplinas_dos_projetos_projetos1_idx` (`idp_projeto_id` ASC) ,
+  INDEX `fk_disciplinas_dos_projetos_disciplinas1_idx` (`idp_disciplina_id` ASC) ,
+  CONSTRAINT `fk_disciplinas_dos_projetos_projetos1`
+    FOREIGN KEY (`idp_projeto_id`)
+    REFERENCES `mydb2`.`projetos` (`projeto_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_disciplinas_dos_projetos_disciplinas1`
+    FOREIGN KEY (`idp_disciplina_id`)
+    REFERENCES `mydb2`.`disciplinas` (`disciplina_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
